@@ -1,0 +1,150 @@
+  Create a Marker to cover the whole map or the Area you want New building markers to appear.
+call it Marker1.
+  Copy the below code and place it inside your init.sqf
+  USE: Give an object a variableName through whatever means and specify both the 'range' and make a word addition to the 'dynamicboxmarker' string
+so that way you can delete it later using the DELETE script.  
+
+if (isServer) then {
+
+////Find marker and get the size IGNORE
+
+_mkr= "Marker1";
+_mkr setmarkerAlpha 0;
+_pos=markerpos _mkr;
+_mkrY= getmarkerSize _mkr select 0;
+_mkrX= getmarkerSize _mkr select 1;
+_distance= _mkrX;
+if (_mkrY > _mkrX)
+then {
+_distance=_mkrY;
+};
+
+
+
+////Create New Markers USE THIS
+_pos=getPos wa;
+_distance= 1000;
+_HouseArray = ["Building","House","Wall","Bunker"];
+_nearestBuildings = nearestObjects [_pos, _HouseArray, _distance];
+{
+
+_x setVectorUp [0,0,1];
+_x enableSimulation false;
+
+_boundingBox = boundingBox _x;
+_dir = getDir _x;
+_position = getPosATL _x;
+
+_size = _boundingBox select 1;
+_size resize 1.5;
+_markername = "dynamicboxmarker" + str(floor(random 500)) + str(floor(random 500));
+
+
+createMarker [_markername, _position];
+_markername setMarkerShape "RECTANGLE";
+_markername setMarkerSize _size;
+_markername setMarkerBrush "SolidFull";
+_markername setMarkerColor colorBlack;
+_markername setMarkerDir _dir;
+} forEach _nearestBuildings;
+
+
+
+
+};
+
+DELETE
+Clears markers made by the above script  
+
+
+{ 
+ private "_a"; 
+ _a = toArray _x; 
+ _a resize 100; 
+
+ if (["dynamicboxmarker", toString _a] call BIS_fnc_inString) then 
+ { 
+  deleteMarker _x; 
+ } 
+} forEach allMapMarkers; 
+
+
+
+
+
+
+
+Delete all markers on map, period. This will break your mission. Dont use this.
+
+{ 
+ private "_a"; 
+ _a = toArray _x; 
+ _a resize 1000; 
+   deleteMarker _x; 
+} forEach allMapMarkers;
+
+
+
+
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_pos=getPos hq;
+_distance= 50000;
+_HouseArray = ["Building","House","Wall","Bunker","STACK", "RUIN", "TOURISM","TRANSMITTER","ROCK","CHURCH", "CHAPEL", "CROSS","FUELSTATION", "HOSPITAL", "FENCE","FORTRESS", "FOUNTAIN", ];
+_nearestBuildings = nearestObjects [_pos, _HouseArray, _distance];
+{
+
+_x setVectorUp [0,0,1];
+_x enableSimulation false;
+
+_boundingBox = boundingBox _x;
+_dir = getDir _x;
+_position = getPosATL _x;
+
+_size = _boundingBox select 1;
+_size resize 1.5;
+_markername = "dynamicboxmarkerlol" + str(floor(random 500)) + str(floor(random 500));
+
+
+createMarker [_markername, _position];
+_markername setMarkerShape "RECTANGLE";
+_markername setMarkerSize _size;
+_markername setMarkerBrush "SolidFull";
+_markername setMarkerColor colorBlack;
+_markername setMarkerDir _dir;
+} forEach _nearestBuildings;
+
+
+
